@@ -4,7 +4,6 @@ from datetime import datetime
 
 from sqlalchemy import MetaData
 from sqlalchemy import Table, Column, Integer, String, DateTime
-from sqlalchemy import select
 
 
 engine = create_engine('postgresql://postgres:root@localhost/pythondb')
@@ -42,20 +41,14 @@ if __name__ == '__main__':
         with open('users.json') as file:
             #users = json.load(file)
             connection.execute(users.insert(), json.load(file))
-        # SELECT * FROM users;
-        # select_query = users.select()
         
-        select_query = select(
-            users.c.id,
-            users.c.email,
-            users.c.name
-        )
+        select_query = users.select()
         
         result = connection.execute(select_query) # ResultProxy
         
         for user in result.fetchall():
             # print(user) # RowProxy traerá todos los registros
-            print(user) # RowProxy traerá sólo los nombres
+            print(user.name) # RowProxy traerá sólo los nombres
         
         # print(select_query)  
         # print(result)
