@@ -42,23 +42,26 @@ if __name__ == '__main__':
         with open('users.json') as file:
             #users = json.load(file)
             connection.execute(users.insert(), json.load(file))
-        # SELECT * FROM users;
-        # select_query = users.select()
+        # SELECT * FROM users WHERE country = 'Serbia';
+        select_query = users.select().where(users.c.country == 'Serbia')
         
-        select_query = select(
-            users.c.id,
-            users.c.email,
-            users.c.name
-        )
+        # SELECT id, email,name FROM users WHERE country = 'Serbia'
+        # select_query = select(
+        #     users.c.id,
+        #     users.c.email,
+        #     users.c.name
+        # ).where(
+        #     users.c.country == "Serbia"
+        # )
+        
+        print(select_query)
         
         result = connection.execute(select_query) # ResultProxy
         
         for user in result.fetchall():
             # print(user) # RowProxy traerá todos los registros
             print(user) # RowProxy traerá sólo los nombres
-        
-        # print(select_query)  
-        # print(result)
+
         
 
     
