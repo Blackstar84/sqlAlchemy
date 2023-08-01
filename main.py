@@ -23,7 +23,15 @@ users = Table(
             
 if __name__ == '__main__':
     
+    metadata.drop_all(engine)
     metadata.create_all(engine)
+    
+    print(users)
+    
+    print(users.c)
+    
+    print(users.c.id)
+    
     
     
     
