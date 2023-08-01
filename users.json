@@ -1,0 +1,44 @@
+[
+    {
+        "age": "73",
+        "country": "United States",
+        "email": "jerome.thomas@example.com",
+        "gender": "male",
+        "name": "Mr Jerome Thomas"
+    },
+    {
+        "age": "57",
+        "country": "Trinidad and Tobago",
+        "email": "oliviavincent@example.net",
+        "gender": "female",
+        "name": "Mr. Keith Wolfe MD"
+    },
+    {
+        "age": "98",
+        "country": "Bahrain",
+        "email": "hernandezzachary@example.org",
+        "gender": "female",
+        "name": "Theodore Turner"
+    },
+    {
+        "age": "34",
+        "country": "Montserrat",
+        "email": "antonio20@example.org",
+        "gender": "male",
+        "name": "Katie Rosales"
+    },
+    {
+        "age": "87",
+        "country": "El Salvador",
+        "email": "hawkinsrichard@example.net",
+        "gender": "female",
+        "name": "Jennifer Cooper"
+    },
+    {
+        "age": "39",
+        "country": "Serbia",
+        "email": "kimberlysanford@example.com",
+        "gender": "female",
+        "name": "Christopher Barr"
+    }
+]
