@@ -35,23 +35,15 @@ if __name__ == '__main__':
     connection = engine.connect()
     
     with connection.begin():
-        
         insert_query = users.insert()    #Query -> INSERT INTO users
         
         with open('users.json') as file:
-            #users = json.load(file)
-            connection.execute(users.insert(), json.load(file))
-        
-        select_query = users.select()
-        
-        result = connection.execute(select_query) # ResultProxy
-        
-        for user in result.fetchall():
-            # print(user) # RowProxy traerá todos los registros
-            print(user.name) # RowProxy traerá sólo los nombres
-        
-        # print(select_query)  
-        # print(result)
-        
-
+            users = json.load(file)
+            connection.execute(insert_query, users)
+            
+            # for user in users:
+            #     query =  insert_query.values(**user)
+            #     connection.execute(query)
+    
+    
     
