@@ -4,8 +4,7 @@ from datetime import datetime
 
 from sqlalchemy import MetaData
 from sqlalchemy import Table, Column, Integer, String, DateTime
-from sqlalchemy import select, and_, or_
-from sqlalchemy import desc, asc
+from sqlalchemy import select
 
 
 engine = create_engine('postgresql://postgres:root@localhost/pythondb')
@@ -44,22 +43,16 @@ if __name__ == '__main__':
             #users = json.load(file)
             connection.execute(users.insert(), json.load(file))
         # SELECT * FROM users WHERE country = 'Serbia';
+        select_query = users.select().where(users.c.country == 'Serbia')
         
         # SELECT id, email,name FROM users WHERE country = 'Serbia'
-        # Listar en consola de forma descendente el nombre de los 10 primeros usuarios cuyo género sea femenino y posean por país Alemania o España
-        select_query = select(
-            users.c.name
-        ).where(
-            and_(
-                users.c.gender == 'female',
-                or_(
-                    users.c.country == 'Serbia',
-                    users.c.country == 'United States'
-                )
-            )
-        ).order_by(
-            asc(users.c.name)
-        ).limit(10)
+        # select_query = select(
+        #     users.c.id,
+        #     users.c.email,
+        #     users.c.name
+        # ).where(
+        #     users.c.country == "Serbia"
+        # )
         
         print(select_query)
         
