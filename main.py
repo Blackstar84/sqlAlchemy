@@ -1,9 +1,9 @@
 import json
-from sqlalchemy import create_engine
+from sqlalchemy import ForeignKey, create_engine
 from datetime import datetime
 
 from sqlalchemy import MetaData
-from sqlalchemy import Table, Column, Integer, String, DateTime
+from sqlalchemy import Table, Column, Integer, String, DateTime, Float
 from sqlalchemy import select, and_, or_
 from sqlalchemy import desc, asc, update, delete
 
@@ -12,18 +12,19 @@ engine = create_engine('postgresql://postgres:root@localhost/pythondb')
 
 metadata = MetaData() # Aquí se crea una instancia del objeto MetaData
 
-#users
-
-users = Table(
-    'users', # Nombre de la tabla
+orders = Table(
+    'orders', # Nombre de la tabla
     metadata, # Objeto de tipo metadato
     Column('id', Integer(), primary_key=True), # Creamos las columnas
-    Column('age', Integer(), nullable=False), # Creamos las columnas
-    Column('country', String(), nullable=False), # Creamos las columnas
-    Column('email', String(), nullable=False), # Creamos las columnas
-    Column('gender', String(), nullable=False), # Creamos las columnas
-    Column('name', String(), nullable=False), # Creamos las columnas
-    Column('created_at', DateTime(), default=datetime.now()), # Creamos las columnas
+)
+
+products = Table(
+    'products', # Nombre de la tabla
+    metadata, # Objeto de tipo metadato
+    Column('id', Integer(), primary_key=True), # Creamos las columnas
+    Column('title', String()), # Creamos las columnas
+    Column('price', Float(5, 2)), # Creamos las columnas
+    Column('order_id', ForeignKey('orders.id'))
 )
 
 
@@ -37,24 +38,37 @@ if __name__ == '__main__':
     connection = engine.connect()
     
     with connection.begin():
+
+        # Orden
+        insert_query = orders.insert()
+        connection.execute(insert_query)
+    
+        # Productos
+        insert_query = products.insert().values(
+            title='Iphone',
+            price= 500.50,
+            order_id=1
+        )
         
-        insert_query = users.insert()    #Query -> INSERT INTO users
+        connection.execute(insert_query)
         
-        with open('users.json') as file:
-            #users = json.load(file)
-            connection.execute(users.insert(), json.load(file))
-            
-        delete_query = delete(users).where(users.c.id==1)
-        result = connection.execute(delete_query)
-        print(result.rowcount)
+        insert_query = products.insert().values(
+            title='Ipad',
+            price= 800.00,
+            order_id=1
+        )
         
-        select_query = select(users.c.id, users.c.name).where(users.c.id == 1)
+        connection.execute(insert_query)
         
-        result = connection.execute(select_query)
+        insert_query = products.insert().values(
+            title='Macbook',
+            price= 2000.00,
+            order_id=1
+        )
         
-        user = result.fetchone()
+        connection.execute(insert_query)
         
-        if user:
-            print(user.name)
-        else:
-            print("El usuario no existe o ha sido eliminado.")
+        
+        
+
+        
