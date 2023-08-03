@@ -44,12 +44,8 @@ if __name__ == '__main__':
             #users = json.load(file)
             connection.execute(users.insert(), json.load(file))
             
-        query_delete = users.delete().where(users.c.id == 1)    
-        
-        print(query_delete)
-        
-        result = connection.execute(query_delete)
-        
+        delete_query = delete(users).where(users.c.id==1)
+        result = connection.execute(delete_query)
         print(result.rowcount)
         
         select_query = select(users.c.id, users.c.name).where(users.c.id == 1)
@@ -58,4 +54,7 @@ if __name__ == '__main__':
         
         user = result.fetchone()
         
-        print(user)
+        if user:
+            print(user.name)
+        else:
+            print("El usuario no existe o ha sido eliminado.")
