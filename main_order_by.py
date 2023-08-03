@@ -43,18 +43,32 @@ if __name__ == '__main__':
         with open('users.json') as file:
             #users = json.load(file)
             connection.execute(users.insert(), json.load(file))
-            
-        selec_query = select(users.c.name).where(users.c.id == 1)    
+        # SELECT * FROM users WHERE country = 'Serbia';
+        
+        # SELECT id, email,name FROM users WHERE country = 'Serbia'
+        # Listar en consola de forma descendente el nombre de los 10 primeros usuarios cuyo género sea femenino y posean por país Alemania o España
+        select_query = select(
+            users.c.name
+        ).where(
+            and_(
+                users.c.gender == 'female',
+                or_(
+                    users.c.country == 'Serbia',
+                    users.c.country == 'United States'
+                )
+            )
+        ).order_by(
+            asc(users.c.name)
+        ).limit(10)
+        
+        print(select_query)
+        
+        result = connection.execute(select_query) # ResultProxy
+        
+        for user in result.fetchall():
+            # print(user) # RowProxy traerá todos los registros
+            print(user) # RowProxy traerá sólo los nombres
 
-        result = connection.execute(selec_query)
-        user = result.fetchone()
-        print(user)
-        print(user.name)
         
-        query_dos = select(users.c.name).order_by(desc(users.c.id)).limit(1)
-        result2 = connection.execute(query_dos)
-        user2 = result2.fetchone()
-        print(user2.name)
-        
-        
-        
+
+    
